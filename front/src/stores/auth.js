@@ -65,7 +65,7 @@ export const useAuthStore = defineStore("auth", {
     async logout() {
       localStorage.clear();
       this.user = null;
-      this.router.push({ path: "/login" });
+      this.router.push({ path: "/" });
     },
     async onLoginSuccess() {
       Notify.create({
@@ -85,7 +85,7 @@ export const useAuthStore = defineStore("auth", {
         const res = await $api.get("/api/users/me?[populate]=*");
         if (res) {
           this.user = { ...this.user, ...res.data };
-          this.router.push({ name: "UserFeed" });
+          this.router.push({ name: 'UserFeed', params: { id: this.user.id } });
         }
       } catch (err) {
         this.onLoginError(err);

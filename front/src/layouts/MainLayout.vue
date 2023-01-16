@@ -1,8 +1,15 @@
-<script>
-import { defineComponent, ref } from 'vue'
+<script setup>
+import { computed, reactive, ref } from 'vue'
 import EssentialLink from 'components/EssentialLink.vue'
+import { useAuthStore } from '@/stores/auth'
 
-const linksList = [
+const authStore = useAuthStore()
+
+const user = computed(() => {
+  return authStore.user
+})
+
+const linksList = reactive([
   {
     title: 'Docs',
     caption: 'quasar.dev',
@@ -45,27 +52,16 @@ const linksList = [
     icon: 'favorite',
     link: 'https://awesome.quasar.dev'
   }
-]
+])
 
-export default defineComponent({
-  name: 'MainLayout',
+const leftDrawerOpen = ref(false)
 
-  components: {
-    EssentialLink
-  },
 
-  setup() {
-    const leftDrawerOpen = ref(false)
+const essentialLinks = ref(linksList)
+const toggleLeftDrawer = () => {
+  leftDrawerOpen.value = !leftDrawerOpen.value
+}
 
-    return {
-      essentialLinks: linksList,
-      leftDrawerOpen,
-      toggleLeftDrawer() {
-        leftDrawerOpen.value = !leftDrawerOpen.value
-      }
-    }
-  }
-})
 </script>
 
 <template>
@@ -86,9 +82,46 @@ export default defineComponent({
         </q-toolbar-title>
 
         <q-btn
-          label="Login/Signup"
           flat
-        />
+          no-caps
+          class="user-name"
+        >
+          <q-avatar size="26px">
+            <img src="https://cdn.quasar.dev/img/boy-avatar.png" />
+          </q-avatar>
+          <div
+            class="q-ml-sm ellipsis"
+            style="max-width: 100px"
+          >
+            {{ authStore.fullName }}
+          </div>
+          <q-menu>
+            <q-list style="min-width: 100px">
+              <q-item
+                clickable
+                v-close-popup
+                :to="{ name: 'UserProfile', params: { id: user.id } }"
+              >
+                <q-item-section>Profile</q-item-section>
+              </q-item>
+              <q-item
+                clickable
+                v-close-popup
+              >
+                <q-item-section>Settings</q-item-section>
+              </q-item>
+              <q-separator />
+              <q-item
+                clickable
+                v-close-popup
+                @click="authStore.logout()"
+                class="text-negative"
+              >
+                <q-item-section>Logout</q-item-section>
+              </q-item>
+            </q-list>
+          </q-menu>
+        </q-btn>
       </q-toolbar>
     </q-header>
 

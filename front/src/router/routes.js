@@ -1,13 +1,13 @@
 
 const routes = [
   // Authenticated routes
-  // {
-  //   path: '/',
-  //   component: () => import('layouts/MainLayout.vue'),
-  //   children: [
-  //     { name: 'HomePage', path: '', component: () => import('src/pages/HomePage.vue') }
-  //   ]
-  // },
+  {
+    path: '/',
+    component: () => import('layouts/MainLayout.vue'),
+    children: [
+      { name: 'UserFeed', path: '/feed/:id', component: () => import('src/pages/UserFeed.vue') }
+    ]
+  },
 
   // Public routes
   {
