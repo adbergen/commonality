@@ -39,8 +39,6 @@ const user = reactive({
                         v-model="user.email"
                         label="Email"
                     />
-
-
                     <q-input
                         dense
                         class="q-px-lg"
@@ -92,7 +90,6 @@ const user = reactive({
                             @click="authStore.signup({ firstName: user.firstName, lastName: user.lastName, username: user.username, email: user.email, password: user.password, })"
                         />
                     </q-card-actions>
-
                 </q-form>
             </q-card-section>
         </q-card>
@@ -103,7 +100,7 @@ const user = reactive({
         >
             <div class="row justify-center items-center">
                 <q-card-section> Have an account? </q-card-section>
-                <q-card-section>
+                <q-card-actions>
                     <q-btn
                         label="Log in"
                         flat
@@ -112,7 +109,7 @@ const user = reactive({
                         no-caps
                         @click="$emit('switchPage')"
                     />
-                </q-card-section>
+                </q-card-actions>
             </div>
         </q-card>
     </div>

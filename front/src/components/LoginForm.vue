@@ -36,7 +36,6 @@ const user = reactive({
                         v-model="user.email"
                         label="Phone number, username or email"
                     />
-
                     <q-input
                         dense
                         class="q-px-lg"
@@ -58,7 +57,6 @@ const user = reactive({
                             @click="authStore.login({ identifier: user.email, password: user.password })"
                         />
                     </q-card-actions>
-
                     <q-card-actions class="q-px-lg q-mx-xl">
                         <q-btn
                             flat
@@ -78,7 +76,7 @@ const user = reactive({
         >
             <div class="row justify-center items-center">
                 <q-card-section> Don't have an account? </q-card-section>
-                <q-card-section>
+                <q-card-actions>
                     <q-btn
                         label="Sign Up"
                         flat
@@ -87,7 +85,7 @@ const user = reactive({
                         no-caps
                         @click="$emit('switchPage')"
                     />
-                </q-card-section>
+                </q-card-actions>
             </div>
         </q-card>
     </div>
