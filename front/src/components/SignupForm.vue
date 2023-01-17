@@ -1,9 +1,15 @@
 <script setup>
 import { reactive } from "vue";
+import { useAuthStore } from "@/stores/auth";
 
 const emit = defineEmits(["switchPage"]);
 
+const authStore = useAuthStore()
+
 const user = reactive({
+    firstName: "",
+    lastName: "",
+    username: "",
     email: "",
     password: "",
 });
@@ -30,14 +36,10 @@ const user = reactive({
                         bg-color="grey-12"
                         outlined
                         square
-                        v-model="user.password"
-                        type="password"
-                        label="Mobile number or Email"
-                    >
-                        <q-separator />
+                        v-model="user.email"
+                        label="Email"
+                    />
 
-                        <template v-slot:prepend> </template>
-                    </q-input>
 
                     <q-input
                         dense
@@ -46,12 +48,9 @@ const user = reactive({
                         bg-color="grey-12"
                         outlined
                         square
-                        v-model="user.password"
-                        type="password"
-                        label="Full name"
-                    >
-                        <template v-slot:prepend> </template>
-                    </q-input>
+                        v-model="user.firstName"
+                        label="First name"
+                    />
                     <q-input
                         dense
                         class="q-px-lg"
@@ -59,14 +58,19 @@ const user = reactive({
                         bg-color="grey-12"
                         outlined
                         square
-                        v-model="user.password"
-                        type="password"
+                        v-model="user.lastName"
+                        label="Last name"
+                    />
+                    <q-input
+                        dense
+                        class="q-px-lg"
+                        color="grey-12"
+                        bg-color="grey-12"
+                        outlined
+                        square
+                        v-model="user.username"
                         label="Username"
-                    >
-                        <q-separator />
-
-                        <template v-slot:prepend> </template>
-                    </q-input>
+                    />
                     <q-input
                         dense
                         class="q-px-lg"
@@ -77,16 +81,15 @@ const user = reactive({
                         v-model="user.password"
                         type="password"
                         label="Password"
-                    >
-                        <template v-slot:prepend> </template>
-                    </q-input>
+                    />
 
                     <q-card-actions class="q-px-lg">
                         <q-btn
                             flat
                             no-caps
-                            label="Next"
+                            label="Signup"
                             class="text-white bg-light-blue col-12"
+                            @click="authStore.signup({ firstName: user.firstName, lastName: user.lastName, username: user.username, email: user.email, password: user.password, })"
                         />
                     </q-card-actions>
 

@@ -35,11 +35,8 @@ const user = reactive({
                         square
                         v-model="user.email"
                         label="Phone number, username or email"
-                    >
-                        <q-separator />
+                    />
 
-                        <template v-slot:prepend> </template>
-                    </q-input>
                     <q-input
                         dense
                         class="q-px-lg"
@@ -50,9 +47,7 @@ const user = reactive({
                         v-model="user.password"
                         type="password"
                         label="Password"
-                    >
-                        <template v-slot:prepend> </template>
-                    </q-input>
+                    />
 
                     <q-card-actions class="q-px-lg">
                         <q-btn
