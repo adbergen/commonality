@@ -72,7 +72,7 @@ export const useAuthStore = defineStore("auth", {
         type: "positive",
         message: "Login successful!",
       });
-      this.fetchCurrentUserRole();
+      this.fetchCurrentUser();
     },
     async onLoginError(err) {
       Notify.create({
@@ -80,9 +80,9 @@ export const useAuthStore = defineStore("auth", {
         message: "Unsuccessful login: " + err?.response.data.error.message,
       });
     },
-    async fetchCurrentUserRole() {
+    async fetchCurrentUser() {
       try {
-        const res = await $api.get("/api/users/me?[populate]=*");
+        const res = await $api.get("/api/users/me");
         if (res) {
           this.user = { ...this.user, ...res.data };
           this.router.push({ name: 'UserFeed', params: { id: this.user.id } });

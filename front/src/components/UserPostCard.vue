@@ -1,8 +1,31 @@
 <script setup>
+import { ref } from 'vue'
+import { $api } from 'src/boot/axios'
+import { useAuthStore } from "@/stores/auth"
+import dateConverter from "@/utils/date-converter.js";
+
+const authStore = useAuthStore()
+
+const userPosts = ref([])
+
+const getData = async () => {
+    try {
+        const response = await $api.get(`/api/posts?populate[users]&[filters][user][id][$eq]=${authStore.user.id}`
+        );
+        // JSON responses are automatically parsed.
+        userPosts.value = response.data.data;
+        console.log(userPosts);
+    } catch (error) {
+        console.log(error);
+    }
+}
+getData()
 </script>
 
 <template>
     <q-card
+        v-for="post, index in userPosts"
+        :key="index"
         class="my-card"
         flat
         bordered
@@ -15,9 +38,9 @@
             </q-item-section>
 
             <q-item-section>
-                <q-item-label>Title</q-item-label>
+                <q-item-label>{{ authStore.fullName }}</q-item-label>
                 <q-item-label caption>
-                    Subhead
+                    {{ dateConverter(post.createdAt, 'l') }}
                 </q-item-label>
             </q-item-section>
         </q-item>
@@ -26,14 +49,11 @@
 
         <q-card-section horizontal>
             <q-card-section>
-                {{ lorem }}
+                {{ post.text }}
             </q-card-section>
 
-            <q-separator vertical />
+            <q-separator />
 
-            <q-card-section class="col-4">
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-            </q-card-section>
         </q-card-section>
     </q-card>
 </template>
