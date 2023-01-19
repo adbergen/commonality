@@ -1,27 +1,20 @@
 <script setup>
-import { ref } from 'vue'
-import { $api } from 'src/boot/axios'
+import { ref, computed } from 'vue'
 import { useAuthStore } from "@/stores/auth"
+import { usePostStore } from "@/stores/post"
 import dateConverter from "@/utils/date-converter.js";
 
 const authStore = useAuthStore()
+const postStore = usePostStore()
+
+// Get all posts
+postStore.fetchPosts()
+// Filter posts by current user
+const userPosts = computed(() => {
+    return postStore.getPostsByCurrentUser(authStore.user.id)
+})
 
 const newPost = ref("")
-
-const userPosts = ref([])
-
-const getData = async () => {
-    try {
-        const response = await $api.get(`/api/posts?populate[users]&[filters][user][id][$eq]=${authStore.user.id}`
-        );
-        // JSON responses are automatically parsed.
-        userPosts.value = response.data.data;
-        console.log(userPosts);
-    } catch (error) {
-        console.log(error);
-    }
-}
-getData()
 </script>
 
 <template>
