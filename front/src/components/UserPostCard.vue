@@ -1,5 +1,5 @@
 <script setup>
-import { ref, computed } from 'vue'
+import { reactive, ref, computed } from 'vue'
 import { useAuthStore } from "@/stores/auth"
 import { usePostStore } from "@/stores/post"
 import dateConverter from "@/utils/date-converter.js";
@@ -8,13 +8,16 @@ const authStore = useAuthStore()
 const postStore = usePostStore()
 
 // Get all posts
-postStore.fetchPosts()
+postStore.getPosts()
 // Filter posts by current user
 const userPosts = computed(() => {
     return postStore.getPostsByCurrentUser(authStore.user.id)
 })
 
-const newPost = ref("")
+const post = reactive({
+    text: '',
+    user: authStore.user.id
+})
 </script>
 
 <template>
@@ -25,10 +28,10 @@ const newPost = ref("")
             bordered
         >
             <q-input
+                class="q-pa-lg"
                 bottom-slots
-                v-model="text"
-                label="Label"
-                :dense="dense"
+                v-model="post.text"
+                label="What's on your mind?"
             >
                 <template v-slot:before>
                     <q-avatar>
@@ -38,16 +41,11 @@ const newPost = ref("")
 
                 <template v-slot:append>
                     <q-icon
-                        v-if="text !== ''"
+                        v-if="post.text !== ''"
                         name="close"
-                        @click="text = ''"
+                        @click="post.text = ''"
                         class="cursor-pointer"
                     />
-                    <q-icon name="schedule" />
-                </template>
-
-                <template v-slot:hint>
-                    Field hint
                 </template>
 
                 <template v-slot:after>
@@ -56,6 +54,7 @@ const newPost = ref("")
                         dense
                         flat
                         icon="send"
+                        @click="postStore.createPost(post)"
                     />
                 </template>
             </q-input>

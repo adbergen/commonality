@@ -17,9 +17,17 @@ export const usePostStore = defineStore("post", {
             this.posts = []
             this.loading = true
             try {
-                this.posts = await $api.get(`/api/posts?populate=*`
+                this.posts = await $api.get(`/posts?populate=*`
                 ).then((response) => response.data.data)
             } catch (error) {
+                this.error = error
+            } finally {
+                this.loading = false
+            }
+        },
+        async createPost(data) {
+            try { await $api.post(`/posts`, { data }) }
+            catch (error) {
                 this.error = error
             } finally {
                 this.loading = false
@@ -29,7 +37,7 @@ export const usePostStore = defineStore("post", {
             this.post = null
             this.loading = true
             try {
-                this.post = await $api.get(`/api/posts?populate[users]&[filters][user][id][$eq]=${id}`)
+                this.post = await $api.get(`/posts?populate[users]&[filters][user][id][$eq]=${id}`)
                     .then((response) => response.data.data)
             } catch (error) {
                 this.error = error

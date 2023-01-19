@@ -6,7 +6,7 @@ export const useAuthStore = defineStore("auth", {
   state: () => ({
     user: null,
     token: null,
-    serverFallback: "http://localhost:1337",
+    serverFallback: "http://localhost:1337/api",
     returnUrl: null,
   }),
   persist: true,
@@ -29,7 +29,7 @@ export const useAuthStore = defineStore("auth", {
       password,
     }) {
       try {
-        const res = await $publicApi.post("/api/auth/local/register", {
+        const res = await $publicApi.post("/auth/local/register", {
           firstName,
           lastName,
           username,
@@ -48,7 +48,7 @@ export const useAuthStore = defineStore("auth", {
     },
     async login({ identifier, password }) {
       try {
-        const res = await $publicApi.post("/api/auth/local", {
+        const res = await $publicApi.post("/auth/local", {
           identifier,
           password,
         });
@@ -82,7 +82,7 @@ export const useAuthStore = defineStore("auth", {
     },
     async fetchCurrentUser() {
       try {
-        const res = await $api.get("/api/users/me");
+        const res = await $api.get("/users/me");
         if (res) {
           this.user = { ...this.user, ...res.data };
           this.router.push({ name: 'UserFeed', params: { id: this.user.id } });

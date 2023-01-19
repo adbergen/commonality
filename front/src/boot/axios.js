@@ -23,7 +23,7 @@ const qsInterceptor = (config) => {
 
 export default boot(({ app, store }) => {
   const authStore = useAuthStore()
-  const baseURL = removeTrailingSlash(authStore.apiServer) || 'http://localhost:1337'
+  const baseURL = removeTrailingSlash(authStore.apiServer) || 'http://localhost:1337/api'
   $api = axios.create()
   $api.interceptors.request.use((config) => {
     return {
