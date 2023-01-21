@@ -32,7 +32,7 @@ export const usePostStore = defineStore('post', {
     async createPost(data: Post) {
       try {
         await $api
-          .post('/posts?populate=user', { data })
+          .post('/posts?populate=deep', { data })
           .then((response) => this.posts.push(response.data.data as Post));
       } catch (error) {
         handleApiError(error as ApiError);
