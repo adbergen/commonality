@@ -1,10 +1,10 @@
 import User from './User';
-import Comment from './Comment';
+import { Comment } from './Comment';
 
 export interface Post {
   id?: number;
   text: string;
-  user: User;
+  author: User;
   comments?: Comment;
   createdAt: string;
 }

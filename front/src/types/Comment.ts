@@ -1,6 +1,11 @@
 import { Post } from './Post';
+import User from './User';
 
-export default interface Comment {
+export interface Comment {
+  id?: number;
   text: string;
-  post: Post;
+  post?: Post;
+  author: User;
 }
+
+export type Comments = Array<Comment>;

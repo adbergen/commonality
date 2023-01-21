@@ -13,7 +13,7 @@ export const usePostStore = defineStore('post', {
   persist: true,
   getters: {
     getPostsByCurrentUser: (state) => (userId: number) =>
-      state.posts.filter((post: Post) => post.user?.id === userId),
+      state.posts.filter((post: Post) => post.author?.id === userId),
   },
   actions: {
     async getPosts() {

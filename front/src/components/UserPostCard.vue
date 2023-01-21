@@ -1,29 +1,46 @@
 <script setup lang="ts">
-import { reactive, computed } from 'vue'
+import { reactive, ref, computed } from 'vue'
 import { useAuthStore } from '@/stores/auth'
 import { usePostStore } from '@/stores/post'
+import { useCommentStore } from '@/stores/comment'
 import { Post, Posts } from '@/types/Post'
+import { Comment, Comments } from '@/types/Comment'
 import dateConverter from '@/utils/date-converter';
 
 const authStore = useAuthStore()
 const postStore = usePostStore()
+const commentStore = useCommentStore()
+
+const isCommentSectionOpen = ref(false)
+
+
+
+// Get all posts
+postStore.getPosts()
 
 const userId = computed(() => {
     return authStore.user?.id as number
 })
 
-// Get all posts
-postStore.getPosts()
 // Filter posts by current user
-const userPosts = computed(() => {
+const currentUserPosts = computed(() => {
     return postStore.getPostsByCurrentUser(userId.value as number)
+})
+
+const postComments = computed(() => {
+    return commentStore.comments
 })
 
 const post: Post = reactive({
     text: '',
-    user: { id: userId.value },
+    author: { id: userId.value },
     createdAt: ''
+})
 
+const comment: Comment = reactive({
+    text: '',
+    author: { id: userId.value },
+    createdAt: ''
 })
 </script>
 
@@ -70,7 +87,7 @@ const post: Post = reactive({
 
         <!-- Post list -->
         <q-card
-            v-for="post, index in (userPosts as Posts)"
+            v-for="post, index in (currentUserPosts as Posts)"
             :key="index"
             class="col-12"
             flat
@@ -203,6 +220,7 @@ const post: Post = reactive({
                     dense
                     icon="o_comment"
                     label="Comment"
+                    @click="isCommentSectionOpen = true"
                 />
                 <q-btn
                     flat
@@ -211,6 +229,63 @@ const post: Post = reactive({
                     label="Share"
                 />
             </q-card-actions>
+        </q-card>
+
+        <!-- Comment Section -->
+        <q-card
+            v-for="postComment, index in (postComments as Comments)"
+            :key="index"
+            class="col-12"
+            flat
+            bordered
+        >
+            <!-- Users' comment text -->
+            <q-card-section horizontal>
+                <q-card-section class="text-body1">
+                    {{ postComment.text }}
+                </q-card-section>
+            </q-card-section>
+
+
+        </q-card>
+        <q-separator />
+        <q-card
+            v-if="isCommentSectionOpen"
+            class="col-12"
+            flat
+            bordered
+        >
+            <q-input
+                class="q-pa-lg"
+                bottom-slots
+                v-model="comment.text"
+                label="Write a comment"
+            >
+                <template v-slot:before>
+                    <q-avatar>
+                        <img src="https://cdn.quasar.dev/img/avatar5.jpg">
+                    </q-avatar>
+                </template>
+
+                <template v-slot:append>
+                    <q-icon
+                        v-if="comment.text !== ''"
+                        name="close"
+                        @click="comment.text = ''"
+                        class="cursor-pointer"
+                    />
+                </template>
+
+                <template v-slot:after>
+                    <q-btn
+                        round
+                        dense
+                        flat
+                        icon="send"
+                        @click="commentStore.createComment(comment as Comment)"
+                    />
+                </template>
+            </q-input>
         </q-card>
     </div>
 </template>
