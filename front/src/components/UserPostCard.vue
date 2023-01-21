@@ -1,22 +1,29 @@
-<script setup>
-import { reactive, ref, computed } from 'vue'
-import { useAuthStore } from "@/stores/auth"
-import { usePostStore } from "@/stores/post"
-import dateConverter from "@/utils/date-converter.js";
+<script setup lang="ts">
+import { reactive, computed } from 'vue'
+import { useAuthStore } from '@/stores/auth'
+import { usePostStore } from '@/stores/post'
+import dateConverter from '@/utils/date-converter';
+import { Post, Posts } from '@/types/Post'
 
 const authStore = useAuthStore()
 const postStore = usePostStore()
+
+const userId = computed(() => {
+    return authStore.user?.id as number
+})
 
 // Get all posts
 postStore.getPosts()
 // Filter posts by current user
 const userPosts = computed(() => {
-    return postStore.getPostsByCurrentUser(authStore.user.id)
+    return postStore.getPostsByCurrentUser(userId.value as number)
 })
 
-const post = reactive({
+const post: Post = reactive({
     text: '',
-    user: authStore.user.id
+    user: { id: userId.value },
+    createdAt: ''
+
 })
 </script>
 
@@ -54,14 +61,14 @@ const post = reactive({
                         dense
                         flat
                         icon="send"
-                        @click="postStore.createPost(post)"
+                        @click="postStore.createPost(post as Post)"
                     />
                 </template>
             </q-input>
         </q-card>
 
         <q-card
-            v-for="post, index in userPosts"
+            v-for="post, index in (userPosts as Posts)"
             :key="index"
             class="col-12"
             flat

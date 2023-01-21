@@ -1,17 +1,18 @@
-<script setup>
-import { reactive } from "vue";
-import { useAuthStore } from "@/stores/auth";
+<script setup lang="ts">
+import { reactive } from 'vue';
+import { useAuthStore } from '@/stores/auth';
+import User from '@/types/User'
 
-const emit = defineEmits(["switchPage"]);
+const emit = defineEmits(['switchPage']);
 
 const authStore = useAuthStore()
 
 const user = reactive({
-    firstName: "",
-    lastName: "",
-    username: "",
-    email: "",
-    password: "",
+    firstName: '',
+    lastName: '',
+    username: '',
+    email: '',
+    password: '',
 });
 </script>
 
@@ -87,7 +88,7 @@ const user = reactive({
                             no-caps
                             label="Signup"
                             class="text-white bg-light-blue col-12"
-                            @click="authStore.signup({ firstName: user.firstName, lastName: user.lastName, username: user.username, email: user.email, password: user.password, })"
+                            @click="authStore.signup(user as User)"
                         />
                     </q-card-actions>
                 </q-form>
@@ -107,7 +108,7 @@ const user = reactive({
                         size="12px"
                         color="blue"
                         no-caps
-                        @click="$emit('switchPage')"
+                        @click="emit('switchPage')"
                     />
                 </q-card-actions>
             </div>

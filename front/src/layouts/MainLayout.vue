@@ -1,5 +1,5 @@
-<script setup>
-import { computed, reactive, ref } from 'vue'
+<script setup lang="ts">
+import { computed, reactive } from 'vue'
 import { useAuthStore } from '@/stores/auth'
 
 const authStore = useAuthStore()
@@ -64,7 +64,6 @@ const linksList = reactive([
           round
           icon="menu"
           aria-label="Menu"
-          @click="toggleLeftDrawer"
         />
 
         <q-toolbar-title>
@@ -90,7 +89,7 @@ const linksList = reactive([
               <q-item
                 clickable
                 v-close-popup
-                :to="{ name: 'UserProfile', params: { id: user.id } }"
+                :to="{ name: 'UserProfile', params: { id: user?.id } }"
               >
                 <q-item-section>Profile</q-item-section>
               </q-item>
@@ -120,12 +119,11 @@ const linksList = reactive([
         <q-item-label header>
           Essential Links
         </q-item-label>
-
-        <EssentialLink
+        <q-item
           v-for="link in linksList"
           :key="link.title"
           v-bind="link"
-        />
+        ></q-item>
       </q-list>
     </q-drawer>
 
