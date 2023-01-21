@@ -21,7 +21,7 @@ export const usePostStore = defineStore('post', {
       this.loading = true;
       try {
         this.posts = await $api
-          .get('/posts?populate=*')
+          .get('/posts?populate=deep&sort=createdAt%3Adesc')
           .then((response) => response.data.data);
       } catch (error) {
         handleApiError(error as ApiError);
@@ -33,7 +33,7 @@ export const usePostStore = defineStore('post', {
       try {
         await $api
           .post('/posts?populate=deep', { data })
-          .then((response) => this.posts.push(response.data.data as Post));
+          .then((response) => this.posts.unshift(response.data.data as Post));
       } catch (error) {
         handleApiError(error as ApiError);
       } finally {
