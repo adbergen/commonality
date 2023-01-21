@@ -5,8 +5,6 @@ export interface Post {
   id?: number;
   text: string;
   author: User;
-  comments?: Comment;
+  comments?: Comment[];
   createdAt: string;
 }
-
-export type Posts = Array<Post>;

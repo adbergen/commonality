@@ -1,4 +1,4 @@
-import { Posts } from '@/types/Post';
+import { Post } from '@/types/Post';
 
 export default interface User {
   id: number;
@@ -8,5 +8,5 @@ export default interface User {
   firstName?: string;
   lastName?: string;
   role?: { name: string };
-  posts?: Posts;
+  posts?: Post[];
 }

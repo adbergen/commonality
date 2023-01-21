@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { ref } from 'vue';
-import SignupForm from '@/components/SignupForm.vue'
-import LoginForm from '@/components/LoginForm.vue'
+import SignupForm from '@/components/Authentication/SignupForm.vue'
+import LoginForm from '@/components/Authentication/LoginForm.vue'
 
 const isSignupForm = ref(false)
 
