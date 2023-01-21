@@ -40,6 +40,20 @@ export const usePostStore = defineStore('post', {
         this.loading = false;
       }
     },
+    async deletePost(id: number) {
+      try {
+        await $api.delete(`/posts/${id}?populate=deep`).then(
+          (response) =>
+            (this.posts = this.posts.filter(function (post: Post) {
+              return post.id != response.data.data.id;
+            }))
+        );
+      } catch (error) {
+        handleApiError(error as ApiError);
+      } finally {
+        this.loading = false;
+      }
+    },
     // async getPost(id: number) {
     //   this.post = {};
     //   this.loading = true;
