@@ -17,7 +17,7 @@ const postStore = usePostStore()
     <q-card
         v-for="post, index in props.postsByCurrentUser"
         :key="index"
-        class="col-12"
+        class="col-12 q-my-sm"
         flat
         bordered
     >

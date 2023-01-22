@@ -1,7 +1,6 @@
 import { defineStore } from 'pinia';
 import { $api } from '@/boot/axios';
 import { Post } from '@/types/Post';
-// import { Comment } from '@/types/Comment';
 import handleApiError from '@/utils/handle-api-error';
 import ApiError from '@/types/ApiError';
 
@@ -15,12 +14,7 @@ export const usePostStore = defineStore('post', {
   getters: {
     getPostsByCurrentUser: (state) => (userId: number) =>
       state.posts.filter((post: Post) => post.author?.id === userId),
-    getCommentsByPost: (state) => (postId: number) =>
-      state.posts.filter((post) =>
-        post.comments?.filter((comment) => comment.post?.id === postId)
-      ),
   },
-
   actions: {
     async getPosts() {
       this.posts = [];

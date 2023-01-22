@@ -1,6 +1,7 @@
 import { defineStore } from 'pinia';
 import { $api } from '@/boot/axios';
 import { Comment } from '@/types/Comment';
+import { usePostStore } from '@/stores/post';
 import handleApiError from '@/utils/handle-api-error';
 import ApiError from '@/types/ApiError';
 
@@ -11,10 +12,14 @@ export const useCommentStore = defineStore('comment', {
     loading: false,
   }),
   persist: true,
-  // getters: {
-  //   getCommentsByPost: (state) => (postId: number) =>
-  //     state.posts.filter((post: Post) => post.comments?.id === postId),
-  // },
+  getters: {
+    getCommentsByPost: () => (postId: number) => {
+      const postStore = usePostStore();
+      return postStore.posts.filter((post) =>
+        post.comments?.filter((comment) => comment.post?.id === postId)
+      );
+    },
+  },
   actions: {
     async getComments() {
       this.comments = [];
