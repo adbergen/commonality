@@ -4,7 +4,6 @@ import SignupForm from '@/components/Authentication/SignupForm.vue'
 import LoginForm from '@/components/Authentication/LoginForm.vue'
 
 const isSignupForm = ref(false)
-
 </script>
 
 <template>

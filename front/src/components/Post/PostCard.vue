@@ -6,7 +6,6 @@ import { Comment } from '@/types/Comment'
 import CommentsCard from '@/components/Post/CommentsCard.vue'
 import dateConverter from '@/utils/date-converter';
 
-
 const props = defineProps<{ postsByCurrentUser: Post[] }>()
 
 const authStore = useAuthStore()
@@ -28,7 +27,6 @@ const postStore = usePostStore()
                     <img src="https://cdn.quasar.dev/img/boy-avatar.png">
                 </q-avatar>
             </q-item-section>
-
             <q-item-section>
                 <q-item-label>{{ authStore.fullName }}</q-item-label>
                 <q-item-label caption>
@@ -60,7 +58,6 @@ const postStore = usePostStore()
                                         size="md"
                                     />
                                 </q-item-section>
-
                                 <q-item-section>
                                     <q-item-label>Edit Post</q-item-label>
                                     <q-item-label caption>Let's switch things up.</q-item-label>
@@ -71,6 +68,7 @@ const postStore = usePostStore()
                                 spaced
                                 inset="item"
                             />
+
                             <!-- Share Post -->
                             <q-item clickable>
                                 <q-item-section
@@ -83,7 +81,6 @@ const postStore = usePostStore()
                                         size="md"
                                     />
                                 </q-item-section>
-
                                 <q-item-section>
                                     <q-item-label>Report Post</q-item-label>
                                     <q-item-label caption>There's something not right here.</q-item-label>
@@ -110,7 +107,6 @@ const postStore = usePostStore()
                                         size="md"
                                     />
                                 </q-item-section>
-
                                 <q-item-section>
                                     <q-item-label>Delete Post</q-item-label>
                                     <q-item-label caption>I want this post removed forever.</q-item-label>
@@ -129,9 +125,6 @@ const postStore = usePostStore()
             <q-card-section class="text-body1">
                 {{ post.text }}
             </q-card-section>
-
-            <q-separator />
-
         </q-card-section>
 
         <q-separator />
@@ -157,6 +150,8 @@ const postStore = usePostStore()
                 label="Share"
             />
         </q-card-actions>
+
+        <!-- Comments -->
         <CommentsCard :comments="(post.comments as Comment[])" />
     </q-card>
 </template>

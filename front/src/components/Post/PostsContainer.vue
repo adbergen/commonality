@@ -22,10 +22,8 @@ const postsByCurrentUser = computed(() => {
 </script>
 
 <template>
-    <q-scroll-area class="absolute full-width full-height">
-        <div class="q-py-lg q-px-md row items-end q-col-gutter-md">
-            <PostCreationCard />
-            <PostCard :postsByCurrentUser="postsByCurrentUser" />
-        </div>
-    </q-scroll-area>
+    <div class="q-py-lg q-px-md row items-end q-col-gutter-md">
+        <PostCreationCard />
+        <PostCard :postsByCurrentUser="postsByCurrentUser" />
+    </div>
 </template>
