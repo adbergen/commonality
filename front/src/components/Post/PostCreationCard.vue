@@ -31,7 +31,7 @@ const newPost: Post = reactive({
             label="What's on your mind?"
         >
             <template v-slot:before>
-                <q-avatar>
+                <q-avatar size="xl">
                     <img src="https://cdn.quasar.dev/img/avatar5.jpg">
                 </q-avatar>
             </template>
