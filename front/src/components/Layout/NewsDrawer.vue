@@ -4,7 +4,8 @@ import type { Ref } from 'vue'
 import { axios } from '@/boot/axios'
 import handleApiError from '@/utils/handle-api-error';
 import ApiError from '@/types/ApiError';
-import { NewsArticle } from '@/types/NewsArticle'
+import NewsArticle from '@/types/NewsArticle'
+import moment from 'moment'
 
 const searchNewsQuery = ref('')
 
@@ -72,7 +73,7 @@ getTopNews()
                     side
                     top
                 >
-                    <q-item-label caption>{{ article.publishedAt }}</q-item-label>
+                    <q-item-label caption>{{ moment(article.publishedAt).fromNow() }}</q-item-label>
                 </q-item-section>
             </q-item>
         </q-list>

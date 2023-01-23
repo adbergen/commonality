@@ -1,4 +1,4 @@
-export interface NewsArticle {
+export default interface NewsArticle {
   author: string;
   title: string;
   description: string;
