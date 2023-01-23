@@ -1,28 +1,33 @@
 <script setup lang="ts">
-import { reactive, ref } from 'vue'
+import { ref } from 'vue'
+import type { Ref } from 'vue'
+import { axios } from '@/boot/axios'
+import handleApiError from '@/utils/handle-api-error';
+import ApiError from '@/types/ApiError';
+import { NewsArticle } from '@/types/NewsArticle'
 
-const searchNews = ref('')
+const searchNewsQuery = ref('')
 
-const newsItems = reactive([
-    {
-        type: 'Education',
-        title: 'Teachers Need an Increase in Pay',
-        text: 'Secondary line text. Lorem ipsum dolor sit amet, consectetur adipiscit elit.',
-        created: '5 min ago'
-    },
-    {
-        type: 'Health',
-        title: 'The Best Way to Lose Weight',
-        text: 'Secondary line text. Lorem ipsum dolor sit amet, consectetur adipiscit elit.',
-        created: '1 hour ago'
-    },
-    {
-        type: 'Science',
-        title: 'Breaking Discovery',
-        text: 'Secondary line text. Lorem ipsum dolor sit amet, consectetur adipiscit elit.',
-        created: '3 hours ago'
-    },
-])
+const baseNewsApiUrl = ref('https://newsapi.org/v2')
+
+const news: Ref<NewsArticle[]> = ref([])
+
+const getTopNews = () => {
+    let params = {
+        country: 'us',
+        apiKey: process.env.NEWS_API_KEY,
+    }
+    try {
+        axios.get(`${baseNewsApiUrl.value}/top-headlines`, { params })
+            .then((response) => {
+                news.value = response.data.articles;
+                console.log(news.value);
+            })
+    } catch (error) {
+        handleApiError(error as ApiError);
+    }
+}
+getTopNews()
 </script>
 
 <template>
@@ -33,7 +38,7 @@ const newsItems = reactive([
         bordered
     >
         <q-input
-            v-model="searchNews"
+            v-model="searchNewsQuery"
             placeholder="Search News"
             class="q-ma-lg"
             outlined
@@ -51,23 +56,23 @@ const newsItems = reactive([
         >
             <q-item
                 class="q-pa-md"
-                v-for="news, index in newsItems"
+                v-for="article, index in news"
                 :key="index"
             >
                 <q-item-section>
                     <q-item-label
                         overline
                         class="text-grey"
-                    >{{ news.type }}</q-item-label>
-                    <q-item-label class="text-weight-bold">{{ news.title }}</q-item-label>
-                    <q-item-label caption>{{ news.text }}</q-item-label>
+                    >{{ article.source.name }}</q-item-label>
+                    <q-item-label class="text-weight-bold">{{ article.title }}</q-item-label>
+                    <q-item-label caption>{{ article.description }}</q-item-label>
                 </q-item-section>
 
                 <q-item-section
                     side
                     top
                 >
-                    <q-item-label caption>{{ news.created }}</q-item-label>
+                    <q-item-label caption>{{ article.publishedAt }}</q-item-label>
                 </q-item-section>
             </q-item>
         </q-list>
