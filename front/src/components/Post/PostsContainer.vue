@@ -22,7 +22,7 @@ const postsByCurrentUser = computed(() => {
 </script>
 
 <template>
-    <div class="q-py-lg row q-col-gutter-md">
+    <div class="col">
         <PostCreationCard />
         <PostCard :postsByCurrentUser="postsByCurrentUser" />
     </div>
