@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { ref } from 'vue'
 import { useAuthStore } from '@/stores/auth'
 import { usePostStore } from '@/stores/post'
 import { Post } from '@/types/Post'
@@ -7,6 +8,8 @@ import CommentsCard from '@/components/Post/CommentsCard.vue'
 import dateConverter from '@/utils/date-converter';
 
 const props = defineProps<{ postsByCurrentUser: Post[] }>()
+
+const commentsOpen = ref<boolean[]>([]);
 
 const authStore = useAuthStore()
 const postStore = usePostStore()
@@ -142,6 +145,7 @@ const postStore = usePostStore()
                 dense
                 icon="o_comment"
                 label="Comment"
+                @click="commentsOpen[index] = !commentsOpen[index]"
             />
             <q-btn
                 flat
@@ -152,6 +156,9 @@ const postStore = usePostStore()
         </q-card-actions>
 
         <!-- Comments -->
-        <CommentsCard :comments="(post.comments as Comment[])" />
+        <CommentsCard
+            v-if="commentsOpen[index]"
+            :comments="(post.comments as Comment[])"
+        />
     </q-card>
 </template>
