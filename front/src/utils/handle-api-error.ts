@@ -1,5 +1,5 @@
 import { Notify } from 'quasar';
-import ApiError from '@/types/ApiError';
+import ApiError from '@/models/ApiError';
 
 const handleApiError = async (error: ApiError) => {
   Notify.create({

@@ -1,20 +1,23 @@
 <script setup lang="ts">
 import { reactive, computed } from 'vue'
 import { useAuthStore } from '@/stores/auth'
-import { usePostStore } from '@/stores/post'
-import { Post } from '@/types/Post'
+import { useCommentStore } from '@/stores/comment'
+import { Comment } from '@/models/Comment'
+
+const props = defineProps<{ postId: number }>()
 
 const authStore = useAuthStore()
-const postStore = usePostStore()
+const commentStore = useCommentStore()
 
 const userId = computed(() => {
     return authStore.user?.id as number
 })
 
-const newPost: Post = reactive({
+const newComment: Comment = reactive({
     text: '',
     author: { id: userId.value },
-    createdAt: ''
+    createdAt: '',
+    post: { id: props.postId },
 })
 </script>
 
@@ -27,7 +30,7 @@ const newPost: Post = reactive({
         <q-input
             class="q-pa-lg"
             bottom-slots
-            v-model="newPost.text"
+            v-model="newComment.text"
             label="What's on your mind?"
         >
             <template v-slot:before>
@@ -38,9 +41,9 @@ const newPost: Post = reactive({
 
             <template v-slot:append>
                 <q-icon
-                    v-if="newPost.text !== ''"
+                    v-if="newComment.text !== ''"
                     name="close"
-                    @click="newPost.text = ''"
+                    @click="newComment.text = ''"
                     class="cursor-pointer"
                 />
             </template>
@@ -51,7 +54,7 @@ const newPost: Post = reactive({
                     dense
                     flat
                     icon="send"
-                    @click="postStore.createPost(newPost as Post)"
+                    @click="commentStore.createComment(newComment as Comment,)"
                 />
             </template>
         </q-input>

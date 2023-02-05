@@ -2,9 +2,13 @@ import { Post } from './Post';
 import User from './User';
 
 export interface Comment {
-  id: number;
+  id?: number;
   text: string;
-  post?: Post;
+  post?: PostId;
   author: User;
   createdAt: string;
+}
+
+interface PostId {
+  id: number;
 }

@@ -1,8 +1,8 @@
 import { defineStore } from 'pinia';
 import { $api } from '@/boot/axios';
-import { Post } from '@/types/Post';
+import { Post } from '@/models/Post';
 import handleApiError from '@/utils/handle-api-error';
-import ApiError from '@/types/ApiError';
+import ApiError from '@/models/ApiError';
 
 export const usePostStore = defineStore('post', {
   state: () => ({

@@ -1,4 +1,4 @@
-import { Post } from '@/types/Post';
+import { Post } from '@/models/Post';
 
 export default interface User {
   id: number;

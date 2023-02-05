@@ -2,7 +2,7 @@
 import { reactive, computed } from 'vue'
 import { useAuthStore } from '@/stores/auth'
 import { usePostStore } from '@/stores/post'
-import { Post } from '@/types/Post'
+import { Post } from '@/models/Post'
 
 const authStore = useAuthStore()
 const postStore = usePostStore()

@@ -35,17 +35,19 @@ export default route(function (/* { store, ssrContext } */) {
   });
 
   Router.beforeEach(async (to) => {
+    const { path, fullPath } = to;
     const publicPages = ['/', '/reset-password'];
-    const authRequired = !publicPages.includes(to.path);
     const authStore = useAuthStore();
+    const isAuthRequired = !publicPages.includes(path);
+    const isUserLoggedIn = !!authStore.user;
 
-    if (authRequired && !authStore.user) {
-      authStore.returnUrl = to.fullPath;
+    if (isAuthRequired && !isUserLoggedIn) {
+      authStore.returnUrl = fullPath;
       return '/';
     }
 
-    if (!authRequired && authStore.user) {
-      return `/feed/${authStore.user.id}`;
+    if (!isAuthRequired && isUserLoggedIn) {
+      return `/feed/${authStore.user?.id}`;
     }
   });
 

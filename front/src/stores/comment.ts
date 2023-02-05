@@ -1,9 +1,9 @@
 import { defineStore } from 'pinia';
 import { $api } from '@/boot/axios';
-import { Comment } from '@/types/Comment';
+import { Comment } from '@/models/Comment';
 import { usePostStore } from '@/stores/post';
 import handleApiError from '@/utils/handle-api-error';
-import ApiError from '@/types/ApiError';
+import ApiError from '@/models/ApiError';
 
 export const useCommentStore = defineStore('comment', {
   state: () => ({
@@ -38,9 +38,7 @@ export const useCommentStore = defineStore('comment', {
       try {
         await $api
           .post('/comments?populate=deep', { data })
-          .then((response) =>
-            this.comments.unshift(response.data.data as Comment)
-          );
+          .then((response) => console.log(response.data.data as Comment));
       } catch (error) {
         handleApiError(error as ApiError);
       } finally {

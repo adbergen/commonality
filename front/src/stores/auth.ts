@@ -1,8 +1,8 @@
 import { defineStore } from 'pinia';
 import { $publicApi, $api } from '@/boot/axios';
-import { Notify } from 'quasar';
-import User from '@/types/User';
-import ApiError from '@/types/ApiError';
+import displayNotification from '@/utils/display-notification';
+import User from '@/models/User';
+import ApiError from '@/models/ApiError';
 
 export const useAuthStore = defineStore('auth', {
   state: () => ({
@@ -65,17 +65,11 @@ export const useAuthStore = defineStore('auth', {
       this.router.push({ path: '/' });
     },
     async onLoginSuccess() {
-      Notify.create({
-        type: 'positive',
-        message: 'Login successful!',
-      });
+      displayNotification('Login successful!', true);
       this.fetchCurrentUser();
     },
     async onLoginError(error: ApiError) {
-      Notify.create({
-        type: 'negative',
-        message: 'Unsuccessful login: ' + error?.response.data.error.message,
-      });
+      displayNotification(`Unsuccessful login: ${error}`, false);
     },
     async fetchCurrentUser() {
       try {

@@ -2,8 +2,8 @@
 import { ref } from 'vue'
 import { useAuthStore } from '@/stores/auth'
 import { usePostStore } from '@/stores/post'
-import { Post } from '@/types/Post'
-import { Comment } from '@/types/Comment'
+import { Post } from '@/models/Post'
+import { Comment } from '@/models/Comment'
 import CommentsCard from '@/components/Post/CommentsCard.vue'
 import dateConverter from '@/utils/date-converter';
 
@@ -159,6 +159,7 @@ const postStore = usePostStore()
         <CommentsCard
             v-if="commentsOpen[index]"
             :comments="(post.comments as Comment[])"
+            :postId="(post.id as number)"
         />
     </q-card>
 </template>

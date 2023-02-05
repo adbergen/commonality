@@ -1,8 +1,9 @@
 <script setup lang="ts">
-import { Comment } from '@/types/Comment'
+import { Comment } from '@/models/Comment'
 import moment from 'moment'
+import CommentCreationCard from './CommentCreationCard.vue';
 
-const props = defineProps<{ comments: Comment[] }>()
+const props = defineProps<{ comments: Comment[], postId: number }>()
 </script>
 
 <template>
@@ -37,5 +38,7 @@ const props = defineProps<{ comments: Comment[] }>()
                 {{ moment(comment.createdAt).fromNow() }}
             </q-item-section>
         </q-item>
+        <CommentCreationCard :postId="postId" />
     </q-card>
+
 </template>
