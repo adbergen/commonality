@@ -11,6 +11,11 @@ const routes: RouteRecordRaw[] = [
         path: '/feed/:id',
         component: () => import('src/pages/UserFeed.vue'),
       },
+      {
+        name: 'UserProfile',
+        path: '/profile/:id',
+        component: () => import('src/pages/UserProfile.vue'),
+      },
     ],
   },
 

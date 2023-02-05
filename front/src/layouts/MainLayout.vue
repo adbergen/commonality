@@ -12,7 +12,7 @@ const user = computed(() => {
 </script>
 
 <template>
-  <q-layout view="hHh Lpr lff">
+  <q-layout view="hHh LpR lff">
     <!-- Navbar -->
     <q-header
       elevated
