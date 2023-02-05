@@ -12,17 +12,20 @@ export const usePostStore = defineStore('post', {
   }),
   persist: true,
   getters: {
-    getPostsByCurrentUser: (state) => (userId: number) =>
-      state.posts.filter((post: Post) => post.author?.id === userId),
+    getPostsByCurrentUser: (state) => (userId: number) => {
+      return state.posts.filter((post) => post.author?.id === userId);
+    },
   },
   actions: {
     async getPosts() {
       this.posts = [];
       this.loading = true;
+
       try {
-        this.posts = await $api
-          .get('/posts?populate=deep&sort=createdAt%3Adesc')
-          .then((response) => response.data.data);
+        const response = await $api.get(
+          '/posts?populate=deep&sort=createdAt%3Adesc'
+        );
+        this.posts = response.data.data;
       } catch (error) {
         handleApiError(error as ApiError);
       } finally {
@@ -31,9 +34,8 @@ export const usePostStore = defineStore('post', {
     },
     async createPost(data: Post) {
       try {
-        await $api
-          .post('/posts?populate=deep', { data })
-          .then((response) => this.posts.unshift(response.data.data as Post));
+        const response = await $api.post('/posts?populate=deep', { data });
+        this.posts.unshift(response.data.data as Post);
       } catch (error) {
         handleApiError(error as ApiError);
       } finally {
@@ -42,11 +44,9 @@ export const usePostStore = defineStore('post', {
     },
     async deletePost(id: number) {
       try {
-        await $api.delete(`/posts/${id}?populate=deep`).then(
-          (response) =>
-            (this.posts = this.posts.filter(function (post: Post) {
-              return post.id != response.data.data.id;
-            }))
+        const response = await $api.delete(`/posts/${id}?populate=deep`);
+        this.posts = this.posts.filter(
+          (post) => post.id !== response.data.data.id
         );
       } catch (error) {
         handleApiError(error as ApiError);

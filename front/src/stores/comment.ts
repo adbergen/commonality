@@ -1,7 +1,6 @@
 import { defineStore } from 'pinia';
 import { $api } from '@/boot/axios';
 import { Comment } from '@/models/Comment';
-import { usePostStore } from '@/stores/post';
 import handleApiError from '@/utils/handle-api-error';
 import ApiError from '@/models/ApiError';
 
@@ -12,33 +11,17 @@ export const useCommentStore = defineStore('comment', {
     loading: false,
   }),
   persist: true,
-  getters: {
-    getCommentsByPost: () => (postId: number) => {
-      const postStore = usePostStore();
-      return postStore.posts.filter((post) =>
-        post.comments?.filter((comment) => comment.post?.id === postId)
-      );
-    },
-  },
+  getters: {},
   actions: {
-    async getComments() {
-      this.comments = [];
-      this.loading = true;
-      try {
-        this.comments = await $api
-          .get('/comments?populate=deep&sort=createdAt%3Adesc')
-          .then((response) => response.data.data);
-      } catch (error) {
-        handleApiError(error as ApiError);
-      } finally {
-        this.loading = false;
-      }
-    },
     async createComment(data: Comment) {
+      this.loading = true;
+
       try {
-        await $api
-          .post('/comments?populate=deep', { data })
-          .then((response) => console.log(response.data.data as Comment));
+        const { data: createdComment } = await $api.post(
+          '/comments?populate=deep',
+          { data }
+        );
+        console.log(createdComment);
       } catch (error) {
         handleApiError(error as ApiError);
       } finally {
@@ -46,12 +29,12 @@ export const useCommentStore = defineStore('comment', {
       }
     },
     async deleteComment(id: number) {
+      this.loading = true;
+
       try {
-        await $api.delete(`/comments/${id}?populate=deep`).then(
-          (response) =>
-            (this.comments = this.comments.filter(function (comment: Comment) {
-              return comment.id != response.data.data.id;
-            }))
+        const response = await $api.delete(`/comments/${id}?populate=deep`);
+        this.comments = this.comments.filter(
+          (comment) => comment.id !== response.data.data.id
         );
       } catch (error) {
         handleApiError(error as ApiError);

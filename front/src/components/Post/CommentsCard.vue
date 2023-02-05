@@ -38,7 +38,7 @@ const props = defineProps<{ comments: Comment[], postId: number }>()
                 {{ moment(comment.createdAt).fromNow() }}
             </q-item-section>
         </q-item>
-        <CommentCreationCard :postId="postId" />
-    </q-card>
 
+    </q-card>
+    <CommentCreationCard :postId="postId" />
 </template>

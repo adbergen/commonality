@@ -31,7 +31,8 @@ const newComment: Comment = reactive({
             class="q-pa-lg"
             bottom-slots
             v-model="newComment.text"
-            label="What's on your mind?"
+            label="Write a comment"
+            dense
         >
             <template v-slot:before>
                 <q-avatar>
