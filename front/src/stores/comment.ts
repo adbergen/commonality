@@ -1,8 +1,9 @@
 import { defineStore } from 'pinia';
 import { $api } from '@/boot/axios';
 import { Comment } from '@/models/Comment';
-import handleApiError from '@/utils/handle-api-error';
 import ApiError from '@/models/ApiError';
+import { usePostStore } from '@/stores/post';
+import handleApiError from '@/utils/handle-api-error';
 
 export const useCommentStore = defineStore('comment', {
   state: () => ({
@@ -11,8 +12,29 @@ export const useCommentStore = defineStore('comment', {
     loading: false,
   }),
   persist: true,
-  getters: {},
+  getters: {
+    getCommentsByPost: () => (postId: number) => {
+      const postStore = usePostStore();
+      return postStore.posts.filter((post) =>
+        post.comments?.filter((comment) => comment.post?.id === postId)
+      );
+    },
+  },
   actions: {
+    async getComments() {
+      this.loading = true;
+
+      try {
+        const { data: comments } = await $api.get(
+          '/comments?populate=deep&sort=createdAt%3Adesc'
+        );
+        this.comments = comments;
+      } catch (error) {
+        handleApiError(error as ApiError);
+      } finally {
+        this.loading = false;
+      }
+    },
     async createComment(data: Comment) {
       this.loading = true;
 
@@ -21,6 +43,8 @@ export const useCommentStore = defineStore('comment', {
           '/comments?populate=deep',
           { data }
         );
+        const postStore = usePostStore();
+        postStore.getPosts();
         console.log(createdComment);
       } catch (error) {
         handleApiError(error as ApiError);
