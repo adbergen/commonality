@@ -29,6 +29,7 @@ const newPost: Post = reactive({
             bottom-slots
             v-model="newPost.text"
             label="What's on your mind?"
+            @keyup.enter="postStore.createPost(newPost as Post)"
         >
             <template v-slot:before>
                 <q-avatar size="xl">

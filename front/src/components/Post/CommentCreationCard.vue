@@ -33,6 +33,8 @@ const newComment: Comment = reactive({
             v-model="newComment.text"
             label="Write a comment"
             dense
+            @keyup.enter="commentStore.createComment(newComment as Comment, postId)"
+            clearable
         >
             <template v-slot:before>
                 <q-avatar>
