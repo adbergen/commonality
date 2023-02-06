@@ -12,29 +12,8 @@ export const useCommentStore = defineStore('comment', {
     loading: false,
   }),
   persist: true,
-  getters: {
-    getCommentsByPost: () => (postId: number) => {
-      const postStore = usePostStore();
-      return postStore.posts.filter((post) =>
-        post.comments?.filter((comment) => comment.post?.id === postId)
-      );
-    },
-  },
+  getters: {},
   actions: {
-    async getComments() {
-      this.loading = true;
-
-      try {
-        const { data: comments } = await $api.get(
-          '/comments?populate=deep&sort=createdAt%3Adesc'
-        );
-        this.comments = comments;
-      } catch (error) {
-        handleApiError(error as ApiError);
-      } finally {
-        this.loading = false;
-      }
-    },
     async createComment(data: Comment, postId: number) {
       this.loading = true;
 
@@ -55,14 +34,21 @@ export const useCommentStore = defineStore('comment', {
         this.loading = false;
       }
     },
-    async deleteComment(id: number) {
+    async deleteComment(commentId: number, postId: number) {
       this.loading = true;
 
       try {
-        const response = await $api.delete(`/comments/${id}?populate=deep`);
-        this.comments = this.comments.filter(
-          (comment) => comment.id !== response.data.data.id
-        );
+        await $api.delete(`/comments/${commentId}?populate=deep`);
+        const postStore = usePostStore();
+        postStore.$patch((state) => {
+          const postIndex = state.posts.findIndex((post) => post.id === postId);
+          if (postIndex === -1) return;
+          const commentIndex = state.posts[postIndex].comments?.findIndex(
+            (comment) => comment.id === commentId
+          );
+          if (commentIndex === -1) return;
+          state.posts[postIndex].comments?.splice(commentIndex as number, 1);
+        });
       } catch (error) {
         handleApiError(error as ApiError);
       } finally {

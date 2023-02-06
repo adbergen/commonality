@@ -39,11 +39,11 @@ const postStore = usePostStore()
             <q-item-section avatar>
                 <q-btn
                     color="primary"
-                    icon="more_vert"
+                    icon="o_more_vert"
                     flat
                     dense
                 >
-                    <q-menu>
+                    <q-menu v-close-popup>
                         <q-list
                             bordered
                             padding
@@ -72,7 +72,7 @@ const postStore = usePostStore()
                                 inset="item"
                             />
 
-                            <!-- Share Post -->
+                            <!-- Report Post -->
                             <q-item clickable>
                                 <q-item-section
                                     top
