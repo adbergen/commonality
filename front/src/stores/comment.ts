@@ -35,7 +35,7 @@ export const useCommentStore = defineStore('comment', {
         this.loading = false;
       }
     },
-    async createComment(data: Comment) {
+    async createComment(data: Comment, postId: number) {
       this.loading = true;
 
       try {
@@ -44,8 +44,11 @@ export const useCommentStore = defineStore('comment', {
           { data }
         );
         const postStore = usePostStore();
-        postStore.getPosts();
-        console.log(createdComment);
+        postStore.$patch((state) => {
+          const postIndex = state.posts.findIndex((post) => post.id === postId);
+          if (postIndex === -1) return;
+          state.posts[postIndex].comments?.push(createdComment.data);
+        });
       } catch (error) {
         handleApiError(error as ApiError);
       } finally {

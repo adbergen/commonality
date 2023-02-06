@@ -55,7 +55,7 @@ const newComment: Comment = reactive({
                     dense
                     flat
                     icon="send"
-                    @click="commentStore.createComment(newComment as Comment,)"
+                    @click="commentStore.createComment(newComment as Comment, postId)"
                 />
             </template>
         </q-input>
