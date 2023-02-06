@@ -20,7 +20,13 @@ const user = computed(() => {
     >
       <q-toolbar>
         <q-toolbar-title>
-          Commonality
+          <q-btn
+            flat
+            label="Commonality"
+            size="lg"
+            to="/"
+            :ripple="false"
+          />
         </q-toolbar-title>
 
         <q-btn
