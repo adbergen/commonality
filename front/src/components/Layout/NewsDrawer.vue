@@ -3,8 +3,8 @@ import { ref } from 'vue'
 import type { Ref } from 'vue'
 import { axios } from '@/boot/axios'
 import handleApiError from '@/utils/handle-api-error';
-import ApiError from '@/types/ApiError';
-import NewsArticle from '@/types/NewsArticle'
+import ApiError from '@/models/ApiError';
+import NewsArticle from '@/models/NewsArticle'
 import moment from 'moment'
 
 const searchNewsQuery = ref('')

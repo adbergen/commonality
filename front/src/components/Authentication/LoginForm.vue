@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { reactive } from 'vue';
 import { useAuthStore } from '@/stores/auth';
-import User from '@/types/User'
+import User from '@/models/User'
 
 const emit = defineEmits(['switchPage']);
 
@@ -30,23 +30,21 @@ const user = reactive({
                     <q-input
                         dense
                         class="q-px-lg"
-                        color="grey-12"
                         bg-color="grey-12"
                         outlined
-                        square
                         v-model="user.email"
                         label="Phone number, username or email"
+                        autocomplete="username"
                     />
                     <q-input
                         dense
                         class="q-px-lg"
-                        color="grey-12"
                         bg-color="grey-12"
                         outlined
-                        square
                         v-model="user.password"
                         type="password"
                         label="Password"
+                        autocomplete="current-password"
                     />
 
                     <q-card-actions class="q-px-lg">

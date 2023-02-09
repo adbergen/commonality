@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { reactive } from 'vue';
 import { useAuthStore } from '@/stores/auth';
-import User from '@/types/User'
+import User from '@/models/User'
 
 const emit = defineEmits(['switchPage']);
 
@@ -33,50 +33,40 @@ const user = reactive({
                     <q-input
                         dense
                         class="q-px-lg"
-                        color="grey-12"
                         bg-color="grey-12"
                         outlined
-                        square
                         v-model="user.email"
                         label="Email"
                     />
                     <q-input
                         dense
                         class="q-px-lg"
-                        color="grey-12"
                         bg-color="grey-12"
                         outlined
-                        square
                         v-model="user.firstName"
                         label="First name"
                     />
                     <q-input
                         dense
                         class="q-px-lg"
-                        color="grey-12"
                         bg-color="grey-12"
                         outlined
-                        square
                         v-model="user.lastName"
                         label="Last name"
                     />
                     <q-input
                         dense
                         class="q-px-lg"
-                        color="grey-12"
                         bg-color="grey-12"
                         outlined
-                        square
                         v-model="user.username"
                         label="Username"
                     />
                     <q-input
                         dense
                         class="q-px-lg"
-                        color="grey-12"
                         bg-color="grey-12"
                         outlined
-                        square
                         v-model="user.password"
                         type="password"
                         label="Password"

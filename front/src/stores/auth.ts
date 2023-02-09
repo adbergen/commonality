@@ -10,6 +10,7 @@ export const useAuthStore = defineStore('auth', {
     token: '',
     serverFallback: 'http://localhost:1337/api',
     returnUrl: '',
+    loggedIn: false,
   }),
   persist: true,
   getters: {
@@ -18,7 +19,7 @@ export const useAuthStore = defineStore('auth', {
     authHeaders: (state) => {
       return { Authorization: `Bearer ${state.token}` };
     },
-    isAuthenticated: (state) => !!state.token,
+    isAuthenticated: (state) => state.loggedIn,
     userRole: (state) => state.user?.role?.name,
     fullName: (state) => `${state.user?.firstName} ${state.user?.lastName}`,
   },
@@ -51,6 +52,7 @@ export const useAuthStore = defineStore('auth', {
         if (res) {
           this.user = res.data.user;
           this.token = res.data.jwt;
+          this.loggedIn = true;
           localStorage.setItem('jwt', res.data.jwt);
           this.onLoginSuccess();
         }
@@ -62,6 +64,7 @@ export const useAuthStore = defineStore('auth', {
       localStorage.clear();
       this.user = null;
       this.token = '';
+      this.loggedIn = false;
       this.router.push({ path: '/' });
     },
     async onLoginSuccess() {
@@ -80,6 +83,16 @@ export const useAuthStore = defineStore('auth', {
         }
       } catch (error) {
         this.onLoginError(error as ApiError);
+      }
+    },
+    async checkAuth() {
+      try {
+        const res = await $api.get('/users/me');
+        if (res) {
+          this.loggedIn = true;
+        }
+      } catch (error) {
+        console.error(error);
       }
     },
   },

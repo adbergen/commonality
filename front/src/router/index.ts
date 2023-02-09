@@ -39,7 +39,7 @@ export default route(function (/* { store, ssrContext } */) {
     const publicPages = ['/', '/reset-password'];
     const authStore = useAuthStore();
     const isAuthRequired = !publicPages.includes(path);
-    const isUserLoggedIn = !!authStore.user;
+    const isUserLoggedIn = !!authStore.isAuthenticated;
 
     if (isAuthRequired && !isUserLoggedIn) {
       authStore.returnUrl = fullPath;
